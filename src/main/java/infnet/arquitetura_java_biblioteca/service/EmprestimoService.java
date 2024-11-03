@@ -4,7 +4,9 @@ import infnet.arquitetura_java_biblioteca.domain.Cliente;
 import infnet.arquitetura_java_biblioteca.domain.Emprestimo;
 import infnet.arquitetura_java_biblioteca.domain.Livro;
 import infnet.arquitetura_java_biblioteca.domain.dtos.CriarEmprestimoDTO;
+import infnet.arquitetura_java_biblioteca.domain.enums.EmprestimoStatus;
 import infnet.arquitetura_java_biblioteca.exceptions.ClienteNaoEncontradoException;
+import infnet.arquitetura_java_biblioteca.exceptions.EmprestimoNaoEncontradoException;
 import infnet.arquitetura_java_biblioteca.exceptions.LivrosAusentesException;
 import infnet.arquitetura_java_biblioteca.exceptions.LivrosNaoInformadosException;
 import infnet.arquitetura_java_biblioteca.repository.EmprestimoRepository;
@@ -25,6 +27,7 @@ public class EmprestimoService {
 
     public Emprestimo criarEmprestimo(CriarEmprestimoDTO criarEmprestimoDTO) throws LivrosAusentesException {
         if (criarEmprestimoDTO.livrosIds().isEmpty()) throw new LivrosNaoInformadosException("Nenhum livro informado.");
+
         List<Livro> listaLivros = (List<Livro>) this.livroService.buscarLivrosPorId(criarEmprestimoDTO.livrosIds());
         if (listaLivros.size() != criarEmprestimoDTO.livrosIds().size()) {
             List<Long> idsEncontrados = listaLivros.stream()
@@ -35,6 +38,7 @@ public class EmprestimoService {
                     .toList();
             throw new LivrosAusentesException("Nem todos os livros informados foram encontrados, verifique-os IDs enviados e tente novamente", idsAusentes);
         }
+
         Cliente cliente = this.clienteService.buscarCliente(criarEmprestimoDTO.usuarioId());
         if (cliente == null) throw new ClienteNaoEncontradoException("Cliente não encontrado.");
 
@@ -43,6 +47,18 @@ public class EmprestimoService {
         emprestimo.setDataEmprestimo(new Date());
         emprestimo.setDataDevolucao(criarEmprestimoDTO.dataDevolucao());
         emprestimo.setCliente(cliente);
+        emprestimo.setStatus(EmprestimoStatus.INICIADO);
+        return this.emprestimoRepository.save(emprestimo);
+    }
+
+    public Emprestimo finalizarEmprestimo(Long id) {
+        Emprestimo emprestimo = this.emprestimoRepository.findById(id).orElseThrow(() -> new EmprestimoNaoEncontradoException("Emprestimo não encontrado."));
+        emprestimo.setStatus(
+                emprestimo.getDataDevolucao().before(new Date())
+                        ? EmprestimoStatus.FINALIZADO_COM_ATRASO
+                        : EmprestimoStatus.FINALIZADO
+        );
+        emprestimo.setDataDevolucaoEfetivada(new Date());
         return this.emprestimoRepository.save(emprestimo);
     }
 

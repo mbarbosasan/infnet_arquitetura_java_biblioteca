@@ -1,6 +1,7 @@
 package infnet.arquitetura_java_biblioteca.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import infnet.arquitetura_java_biblioteca.domain.enums.EmprestimoStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -20,6 +21,13 @@ public class Emprestimo {
     @NotNull(message = "Data de devolução é obrigatória")
     private Date dataDevolucao;
 
+    @Column(nullable = false, columnDefinition = "varchar(255) default 'ABERTO'")
+    @Enumerated(EnumType.STRING)
+    private EmprestimoStatus status;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT NULL")
+    private Date dataDevolucaoEfetivada;
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     @NotNull
@@ -38,9 +46,14 @@ public class Emprestimo {
     public Emprestimo() {
     }
 
-    public Emprestimo(Long id, Date dataDevolucao, List<Livro> livros) {
+
+    public Emprestimo(Long id, Date dataEmprestimo, Date dataDevolucao, EmprestimoStatus status, Date dataDevolucaoEfetivada, Cliente cliente, List<Livro> livros) {
         this.id = id;
+        this.dataEmprestimo = dataEmprestimo;
         this.dataDevolucao = dataDevolucao;
+        this.status = status;
+        this.dataDevolucaoEfetivada = dataDevolucaoEfetivada;
+        this.cliente = cliente;
         this.livros = livros;
     }
 
@@ -82,5 +95,21 @@ public class Emprestimo {
 
     public void setCliente(@NotNull Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public EmprestimoStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EmprestimoStatus status) {
+        this.status = status;
+    }
+
+    public Date getDataDevolucaoEfetivada() {
+        return dataDevolucaoEfetivada;
+    }
+
+    public void setDataDevolucaoEfetivada(Date dataDevolucaoEfetivada) {
+        this.dataDevolucaoEfetivada = dataDevolucaoEfetivada;
     }
 }

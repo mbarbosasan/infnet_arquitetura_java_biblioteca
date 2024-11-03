@@ -4,6 +4,7 @@ import infnet.arquitetura_java_biblioteca.domain.Emprestimo;
 import infnet.arquitetura_java_biblioteca.domain.dtos.CriarEmprestimoDTO;
 import infnet.arquitetura_java_biblioteca.domain.dtos.ErrorResponse;
 import infnet.arquitetura_java_biblioteca.exceptions.ClienteNaoEncontradoException;
+import infnet.arquitetura_java_biblioteca.exceptions.EmprestimoNaoEncontradoException;
 import infnet.arquitetura_java_biblioteca.exceptions.LivrosAusentesException;
 import infnet.arquitetura_java_biblioteca.exceptions.LivrosNaoInformadosException;
 import infnet.arquitetura_java_biblioteca.service.EmprestimoService;
@@ -31,6 +32,18 @@ public class EmprestimoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
+        }
+    }
+
+    @PostMapping("/finalizar/{id}")
+    public ResponseEntity<?> finalizarEmprestimo(@PathVariable("id") Long id) {
+        try {
+            this.emprestimoService.finalizarEmprestimo(id);
+            return ResponseEntity.ok("Emprestimo finalizado com sucesso!");
+        } catch (EmprestimoNaoEncontradoException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
