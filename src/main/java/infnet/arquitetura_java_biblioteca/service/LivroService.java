@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LivroService {
@@ -30,5 +29,9 @@ public class LivroService {
 
     public Iterable<Livro> buscarLivrosPorAutor(Long id) {
         return this.livroRepository.findByAutorId(id);
+    }
+
+    public Iterable<Livro> buscarLivrosPorId(List<Long> ids) {
+        return this.livroRepository.findAllById(ids);
     }
 }

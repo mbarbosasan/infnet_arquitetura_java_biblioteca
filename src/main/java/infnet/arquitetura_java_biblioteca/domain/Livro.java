@@ -1,10 +1,7 @@
 package infnet.arquitetura_java_biblioteca.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.lang.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -14,21 +11,21 @@ public class Livro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    @NotBlank
+    @NotNull
     private String titulo;
     @ManyToOne
     @JoinColumn(name = "autor_id")
     private Autor autor;
     @Column(nullable = false)
-    @NonNull
+    @NotNull
     private String editora;
     @Column(nullable = false)
-    @NonNull
+    @NotNull
     private Date dataPublicacao;
-    @NonNull
+    @NotNull
     @Column(nullable = false)
     private String genero;
-    @NonNull
+    @NotNull
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean disponibilidade;
 
