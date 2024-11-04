@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Livro } from '../../../../core/model/Livro';
 import { DatePipe } from '@angular/common';
@@ -19,4 +19,9 @@ import { ButtonModule } from 'primeng/button';
 })
 export class CardLivroComponent {
   livro = input.required<Livro>();
+  adicionarCarrinhoEvent = output<Livro>();
+
+  emitAdicionarcarrihoEvent() {
+    this.adicionarCarrinhoEvent.emit(this.livro())
+  }
 }

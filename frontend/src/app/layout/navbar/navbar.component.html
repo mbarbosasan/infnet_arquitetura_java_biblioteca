@@ -1,0 +1,10 @@
+<nav class="w-full surface-section shadow-1 border-bottom-1 surface-border h-3rem flex align-items-center justify-content-between px-2">
+  <div>
+    <p class="p-0 m-0 font-bold">Biblioteca</p>
+  </div>
+  <div>
+    @if (carrinhoService.carrinho$ | async; as carrinho) {
+      <p-button label="Carrinho" icon="pi pi-shopping-cart" [badge]="carrinho.length.toString()" class="mr-1"></p-button>
+    }
+  </div>
+</nav>

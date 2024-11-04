@@ -5,6 +5,8 @@ import { AsyncPipe } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CardLivroComponent } from '../ui/card-livro/card-livro.component';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { CarrinhoService } from '../../../core/services/carrinho.service';
+import { Livro } from '../../../core/model/Livro';
 
 @Component({
   selector: 'app-listagem',
@@ -19,6 +21,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 })
 export class ListagemComponent {
   livroService = inject(LivrosService)
+  carrinhoService = inject(CarrinhoService)
   filter = input<string | null>('');
   filter$ = toObservable(this.filter);
   livros$ = this.livroService.buscarLivros().pipe(
@@ -36,9 +39,8 @@ export class ListagemComponent {
     startWith({ loading: true, livros: [] }),
   )
 
-  constructor() {
-    effect(() => {
-      console.log(this.filter())
-    })
+
+  adicionarAoCarrinho(livro: Livro) {
+    this.carrinhoService.adicionarCarrinho(livro)
   }
 }
