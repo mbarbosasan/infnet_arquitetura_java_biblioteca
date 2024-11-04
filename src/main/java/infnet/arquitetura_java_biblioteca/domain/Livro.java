@@ -29,8 +29,7 @@ public class Livro {
     @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean disponibilidade;
 
-    public Livro(Long id, String titulo, Autor autor, String editora, Date dataPublicacao, String genero, Boolean disponibilidade) {
-        this.id = id;
+    public Livro(String titulo, Autor autor, String editora, Date dataPublicacao, String genero, Boolean disponibilidade) {
         this.titulo = titulo;
         this.autor = autor;
         this.editora = editora;
