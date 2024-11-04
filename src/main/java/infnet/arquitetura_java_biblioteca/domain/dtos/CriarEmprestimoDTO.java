@@ -3,7 +3,8 @@ package infnet.arquitetura_java_biblioteca.domain.dtos;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 
-public record CriarEmprestimoDTO(@NotNull List<Long> livrosIds, @NotNull Long usuarioId, @NotNull Date dataDevolucao) {
+public record CriarEmprestimoDTO(@NotNull HashMap<Long, Integer> livros, @NotNull Long usuarioId,
+                                 @NotNull Date dataDevolucao) {
 }

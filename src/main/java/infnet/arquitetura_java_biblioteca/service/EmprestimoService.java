@@ -7,6 +7,7 @@ import infnet.arquitetura_java_biblioteca.domain.dtos.CriarEmprestimoDTO;
 import infnet.arquitetura_java_biblioteca.domain.enums.EmprestimoStatus;
 import infnet.arquitetura_java_biblioteca.exceptions.*;
 import infnet.arquitetura_java_biblioteca.repository.EmprestimoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +23,18 @@ public class EmprestimoService {
     @Autowired
     private ClienteService clienteService;
 
+    @Transactional()
     public Emprestimo criarEmprestimo(CriarEmprestimoDTO criarEmprestimoDTO) throws LivrosAusentesException {
-        if (criarEmprestimoDTO.livrosIds().isEmpty()) throw new LivrosNaoInformadosException("Nenhum livro informado.");
+        if (criarEmprestimoDTO.livros().isEmpty()) throw new LivrosNaoInformadosException("Nenhum livro informado.");
 
-        List<Livro> listaLivros = (List<Livro>) this.livroService.buscarLivrosPorId(criarEmprestimoDTO.livrosIds());
-        if (listaLivros.size() != criarEmprestimoDTO.livrosIds().size()) {
+        List<Livro> listaLivros = (List<Livro>) this.livroService.buscarLivrosPorId(
+                criarEmprestimoDTO.livros().keySet().stream().toList()
+        );
+        if (listaLivros.size() != criarEmprestimoDTO.livros().size()) {
             List<Long> idsEncontrados = listaLivros.stream()
                     .map(Livro::getId)
                     .toList();
-            List<Long> idsAusentes = criarEmprestimoDTO.livrosIds().stream()
+            List<Long> idsAusentes = criarEmprestimoDTO.livros().keySet().stream()
                     .filter(id -> !idsEncontrados.contains(id))
                     .toList();
             throw new LivrosAusentesException("Nem todos os livros informados foram encontrados, verifique-os IDs enviados e tente novamente", idsAusentes);
@@ -38,6 +42,8 @@ public class EmprestimoService {
 
         Cliente cliente = this.clienteService.buscarCliente(criarEmprestimoDTO.usuarioId());
         if (cliente == null) throw new ClienteNaoEncontradoException("Cliente não encontrado.");
+
+        criarEmprestimoDTO.livros().forEach((id, quantidade) -> this.livroService.diminuirEstoqueLivro(id, quantidade));
 
         Emprestimo emprestimo = new Emprestimo();
         emprestimo.setLivros(listaLivros);

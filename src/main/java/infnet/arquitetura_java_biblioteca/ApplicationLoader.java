@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 
 
 @Component
@@ -38,10 +38,10 @@ public class ApplicationLoader implements ApplicationRunner {
         Autor douglasAdams = autorService.criarAutor(new Autor("Douglas Adams", null));
         Autor edgarAllanPoe = autorService.criarAutor(new Autor("Edgar Allan Poe", null));
 
-        Livro livro = new Livro("Admirável Mundo Novo", aldousHuxley, "Editora Abril", convertToDate(LocalDate.of(1932, 1, 1)), "Ficção Cientifica", true);
-        Livro livro2 = new Livro("1984", aldousHuxley, "Editora Abril", convertToDate(LocalDate.of(1949, 1, 1)), "Ficção Cientifica", true);
-        Livro livro3 = new Livro("O mochileiro das galaxias", douglasAdams, "Editora Abril", convertToDate(LocalDate.of(1979, 1, 1)), "Ficção Cientifica", true);
-        Livro livro4 = new Livro("O corvo", edgarAllanPoe, "Editora Abril", convertToDate(LocalDate.of(1845, 1, 1)), "Terror", true);
+        Livro livro = new Livro("Admirável Mundo Novo", aldousHuxley, "Editora Abril", convertToDate(LocalDate.of(1932, 1, 1)), "Ficção Cientifica", 50);
+        Livro livro2 = new Livro("1984", aldousHuxley, "Editora Abril", convertToDate(LocalDate.of(1949, 1, 1)), "Ficção Cientifica", 50);
+        Livro livro3 = new Livro("O mochileiro das galaxias", douglasAdams, "Editora Abril", convertToDate(LocalDate.of(1979, 1, 1)), "Ficção Cientifica", 50);
+        Livro livro4 = new Livro("O corvo", edgarAllanPoe, "Editora Abril", convertToDate(LocalDate.of(1845, 1, 1)), "Terror", 50);
 
         livroService.criarLivro(aldousHuxley.getId(), livro);
         livroService.criarLivro(aldousHuxley.getId(), livro2);
@@ -51,7 +51,12 @@ public class ApplicationLoader implements ApplicationRunner {
         Cliente cliente = new Cliente("Moises Santos", "Rua das Flores, 123", "8599999999", "moises@mail.com", null);
         clienteService.criarCliente(cliente);
 
-        List<Long> livros = List.of(livro.getId(), livro2.getId(), livro3.getId(), livro4.getId());
+        HashMap<Long, Integer> livros = new HashMap<>();
+        livros.put(livro.getId(), 1);
+        livros.put(livro2.getId(), 1);
+        livros.put(livro3.getId(), 1);
+        livros.put(livro4.getId(), 1);
+
         CriarEmprestimoDTO criarEmprestimoDTO = new CriarEmprestimoDTO(livros, cliente.getId(), java.sql.Date.valueOf(LocalDate.now().plusDays(7)));
 
         try {

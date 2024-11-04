@@ -27,7 +27,8 @@ public class EmprestimoController {
             return ResponseEntity.ok(this.emprestimoService.criarEmprestimo(criarEmprestimoDTO));
         } catch (LivrosAusentesException e) {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), e.getLivrosAusentes()));
-        } catch (LivrosNaoInformadosException | ClienteNaoEncontradoException e) {
+        } catch (LivrosNaoInformadosException | ClienteNaoEncontradoException | LivroNaoEncontradoException |
+                 LivroSemEstoqueException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();

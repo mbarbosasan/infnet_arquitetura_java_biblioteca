@@ -1,6 +1,7 @@
 package infnet.arquitetura_java_biblioteca.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
@@ -27,9 +28,11 @@ public class Livro {
     private String genero;
 
     @NotNull
-    private Long quantidade;
+    @Min(0)
+    @Column(columnDefinition = "BIGINT CHECK (quantidade >= 0)")
+    private Integer quantidade;
 
-    public Livro(String titulo, Autor autor, String editora, Date dataPublicacao, String genero, Long quantidade) {
+    public Livro(String titulo, Autor autor, String editora, Date dataPublicacao, String genero, Integer quantidade) {
         this.titulo = titulo;
         this.autor = autor;
         this.editora = editora;
@@ -89,11 +92,11 @@ public class Livro {
         this.genero = genero;
     }
 
-    public @NotNull Long getQuantidade() {
+    public @NotNull Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(@NotNull Long quantidade) {
+    public void setQuantidade(@NotNull Integer quantidade) {
         this.quantidade = quantidade;
     }
 }
