@@ -17,11 +17,10 @@ public class Emprestimo {
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date dataEmprestimo;
 
-    @Column(nullable = false)
     @NotNull(message = "Data de devolução é obrigatória")
     private Date dataDevolucao;
 
-    @Column(nullable = false, columnDefinition = "varchar(255) default 'ABERTO'")
+    @Column(columnDefinition = "varchar(255) default 'ABERTO'")
     @Enumerated(EnumType.STRING)
     private EmprestimoStatus status;
 

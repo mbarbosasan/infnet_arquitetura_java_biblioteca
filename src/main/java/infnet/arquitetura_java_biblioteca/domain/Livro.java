@@ -10,32 +10,32 @@ public class Livro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+
     @NotNull
     private String titulo;
     @ManyToOne
     @JoinColumn(name = "autor_id")
     private Autor autor;
-    @Column(nullable = false)
+
     @NotNull
     private String editora;
-    @Column(nullable = false)
+
     @NotNull
     private Date dataPublicacao;
-    @NotNull
-    @Column(nullable = false)
-    private String genero;
-    @NotNull
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean disponibilidade;
 
-    public Livro(String titulo, Autor autor, String editora, Date dataPublicacao, String genero, Boolean disponibilidade) {
+    @NotNull
+    private String genero;
+
+    @NotNull
+    private Long quantidade;
+
+    public Livro(String titulo, Autor autor, String editora, Date dataPublicacao, String genero, Long quantidade) {
         this.titulo = titulo;
         this.autor = autor;
         this.editora = editora;
         this.dataPublicacao = dataPublicacao;
         this.genero = genero;
-        this.disponibilidade = disponibilidade;
+        this.quantidade = quantidade;
     }
 
     public Livro() {
@@ -89,11 +89,11 @@ public class Livro {
         this.genero = genero;
     }
 
-    public Boolean getDisponibilidade() {
-        return disponibilidade;
+    public @NotNull Long getQuantidade() {
+        return quantidade;
     }
 
-    public void setDisponibilidade(Boolean disponibilidade) {
-        this.disponibilidade = disponibilidade;
+    public void setQuantidade(@NotNull Long quantidade) {
+        this.quantidade = quantidade;
     }
 }

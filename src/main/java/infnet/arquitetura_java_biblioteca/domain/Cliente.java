@@ -10,18 +10,19 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull
-    @Column(nullable = false)
     private String nome;
+
     @NotNull
-    @Column(nullable = false)
     private String endereco;
+
     @NotNull
-    @Column(nullable = false)
     private String telefone;
+
     @NotNull
-    @Column(nullable = false)
     private String email;
+
     @OneToMany(mappedBy = "cliente")
     private List<Emprestimo> emprestimos;
 
