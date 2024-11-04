@@ -1,0 +1,19 @@
+<div>
+  @if (isDarkMode) {
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-moon"
+      class="border-1 border-solid w-2rem h-2rem surface-border border-round surface-card text-white transition-all transition-duration-300 hover:border-primary"
+      (click)="toggleLightDark()"></button>
+  } @else {
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-sun"
+      class="border-1 border-solid w-2rem h-2rem surface-border border-round surface-card text-black-alpha-90 transition-all transition-duration-300 hover:border-primary"
+      (click)="toggleLightDark()"></button>
+  }
+</div>

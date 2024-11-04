@@ -2,7 +2,8 @@
   <div>
     <p class="p-0 m-0 font-bold">Biblioteca</p>
   </div>
-  <div>
+  <div class="flex align-items-center gap-2">
+    <app-toggle-tema />
     @if (carrinhoService.carrinho$ | async; as carrinho) {
       <p-button label="Carrinho" icon="pi pi-shopping-cart" [badge]="carrinho.length.toString()" class="mr-1"></p-button>
     }

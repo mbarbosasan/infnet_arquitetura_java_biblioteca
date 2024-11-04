@@ -3,6 +3,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CarrinhoService } from '../../core/services/carrinho.service';
 import { AsyncPipe } from '@angular/common';
+import { ToggleTemaComponent } from '../../core/components/toggle-tema/toggle-tema.component';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +11,8 @@ import { AsyncPipe } from '@angular/common';
   imports: [
     ButtonModule,
     BadgeModule,
-    AsyncPipe
+    AsyncPipe,
+    ToggleTemaComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
