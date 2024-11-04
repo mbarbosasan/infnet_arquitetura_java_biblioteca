@@ -1,4 +1,8 @@
-@import "primeng/resources/themes/aura-dark-noir/theme.css";
+@import "primeng/resources/themes/aura-light-noir/theme.css";
 @import "primeng/resources/primeng.min.css";
 @import "primeicons/primeicons.css";
 @import "primeflex/primeflex.min.css";
+
+:root {
+  font-family: 'Inter', sans-serif;
+}
