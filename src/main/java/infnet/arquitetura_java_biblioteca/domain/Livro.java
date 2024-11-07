@@ -1,63 +1,30 @@
 package infnet.arquitetura_java_biblioteca.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-public class Livro {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNull
-    private String titulo;
+@DiscriminatorValue("LIVRO")
+public class Livro extends ItemBiblioteca {
     @ManyToOne
     @JoinColumn(name = "autor_id")
     private Autor autor;
 
     @NotNull
-    private String editora;
-
-    @NotNull
-    private Date dataPublicacao;
-
-    @NotNull
-    private String genero;
-
-    @NotNull
-    @Min(0)
-    @Column(columnDefinition = "BIGINT CHECK (quantidade >= 0)")
-    private Integer quantidade;
-
-    public Livro(String titulo, Autor autor, String editora, Date dataPublicacao, String genero, Integer quantidade) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.editora = editora;
-        this.dataPublicacao = dataPublicacao;
-        this.genero = genero;
-        this.quantidade = quantidade;
-    }
+    private String isbn;
 
     public Livro() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public Livro(String titulo, String generos, String descricao, String imagem_capa, LocalDate dataPublicacao, Integer quantidade, Autor autor, String isbn) {
+        super(titulo, generos, descricao, imagem_capa, dataPublicacao, quantidade);
+        this.autor = autor;
+        this.isbn = isbn;
     }
 
     public Autor getAutor() {
@@ -68,35 +35,11 @@ public class Livro {
         this.autor = autor;
     }
 
-    public String getEditora() {
-        return editora;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setEditora(String editora) {
-        this.editora = editora;
-    }
-
-    public Date getDataPublicacao() {
-        return dataPublicacao;
-    }
-
-    public void setDataPublicacao(Date dataPublicacao) {
-        this.dataPublicacao = dataPublicacao;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public @NotNull Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(@NotNull Integer quantidade) {
-        this.quantidade = quantidade;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 }

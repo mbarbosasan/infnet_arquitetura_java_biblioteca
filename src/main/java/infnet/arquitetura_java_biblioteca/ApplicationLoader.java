@@ -1,14 +1,10 @@
 package infnet.arquitetura_java_biblioteca;
 
-import infnet.arquitetura_java_biblioteca.domain.Autor;
-import infnet.arquitetura_java_biblioteca.domain.Cliente;
-import infnet.arquitetura_java_biblioteca.domain.Livro;
+import infnet.arquitetura_java_biblioteca.domain.*;
 import infnet.arquitetura_java_biblioteca.domain.dtos.CriarEmprestimoDTO;
-import infnet.arquitetura_java_biblioteca.exceptions.LivrosAusentesException;
-import infnet.arquitetura_java_biblioteca.service.AutorService;
-import infnet.arquitetura_java_biblioteca.service.ClienteService;
-import infnet.arquitetura_java_biblioteca.service.EmprestimoService;
-import infnet.arquitetura_java_biblioteca.service.LivroService;
+import infnet.arquitetura_java_biblioteca.domain.dtos.ItemBibliotecaDTO;
+import infnet.arquitetura_java_biblioteca.exceptions.ItensAusentesException;
+import infnet.arquitetura_java_biblioteca.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -16,8 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 
 
 @Component
@@ -26,11 +23,13 @@ public class ApplicationLoader implements ApplicationRunner {
     @Autowired
     private AutorService autorService;
     @Autowired
-    private LivroService livroService;
+    private ItemBibliotecaService itemBibliotecaService;
     @Autowired
     private ClienteService clienteService;
     @Autowired
     private EmprestimoService emprestimoService;
+    @Autowired
+    private EditoraService editoraService;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -38,30 +37,39 @@ public class ApplicationLoader implements ApplicationRunner {
         Autor douglasAdams = autorService.criarAutor(new Autor("Douglas Adams", null));
         Autor edgarAllanPoe = autorService.criarAutor(new Autor("Edgar Allan Poe", null));
 
-        Livro livro = new Livro("Admirável Mundo Novo", aldousHuxley, "Editora Abril", convertToDate(LocalDate.of(1932, 1, 1)), "Ficção Cientifica", 50);
-        Livro livro2 = new Livro("1984", aldousHuxley, "Editora Abril", convertToDate(LocalDate.of(1949, 1, 1)), "Ficção Cientifica", 50);
-        Livro livro3 = new Livro("O mochileiro das galaxias", douglasAdams, "Editora Abril", convertToDate(LocalDate.of(1979, 1, 1)), "Ficção Cientifica", 50);
-        Livro livro4 = new Livro("O corvo", edgarAllanPoe, "Editora Abril", convertToDate(LocalDate.of(1845, 1, 1)), "Terror", 50);
+        Livro livro = new Livro("Admirável Mundo Novo", "Ficção Científica", "Muito bom", "https://google.com.br", LocalDate.of(1932, 1, 1), 50, aldousHuxley, "123456");
+        Livro livro2 = new Livro("1984", "Ficção Científica", "Muito bom", "https://google.com.br", LocalDate.of(1949, 1, 1), 50, aldousHuxley, "123456");
+        Livro livro3 = new Livro("O mochileiro das galaxias", "Ficção Científica", "Muito bom", "https://google.com.br", LocalDate.of(1979, 1, 1), 50, douglasAdams, "123456");
+        Livro livro4 = new Livro("O corvo", "Terror", "Muito bom", "https://google.com.br", LocalDate.of(1845, 1, 1), 50, edgarAllanPoe, "123456");
 
-        livroService.criarLivro(aldousHuxley.getId(), livro);
-        livroService.criarLivro(aldousHuxley.getId(), livro2);
-        livroService.criarLivro(douglasAdams.getId(), livro3);
-        livroService.criarLivro(edgarAllanPoe.getId(), livro4);
+        itemBibliotecaService.cadastrarItemBiblioteca(livro, aldousHuxley.getId());
+        itemBibliotecaService.cadastrarItemBiblioteca(livro2, aldousHuxley.getId());
+        itemBibliotecaService.cadastrarItemBiblioteca(livro3, douglasAdams.getId());
+        itemBibliotecaService.cadastrarItemBiblioteca(livro4, edgarAllanPoe.getId());
+
+        Editora useACabeca = editoraService.cadastrarEditora(new Editora("Use a Cabeça", null));
+        Editora oRlly = editoraService.cadastrarEditora(new Editora("O' Rlly?", null));
+
+        Revista revista = new Revista("Java: Guia do Aprendiz para programação no mundo real", "Tecnologia", "Muito bom", "https://google.com.br", LocalDate.of(2021, 1, 1), 50, useACabeca, "123456");
+        Revista revista2 = new Revista("Trying things until it works", "Tecnologia", "Muito bom", "https://google.com.br", LocalDate.of(2021, 1, 1), 50, oRlly, "123456");
+
+        itemBibliotecaService.cadastrarItemBiblioteca(revista, useACabeca.getId());
+        itemBibliotecaService.cadastrarItemBiblioteca(revista2, oRlly.getId());
 
         Cliente cliente = new Cliente("Moises Santos", "Rua das Flores, 123", "8599999999", "moises@mail.com", null);
         clienteService.criarCliente(cliente);
 
-        HashMap<Long, Integer> livros = new HashMap<>();
-        livros.put(livro.getId(), 1);
-        livros.put(livro2.getId(), 1);
-        livros.put(livro3.getId(), 1);
-        livros.put(livro4.getId(), 1);
+        List<ItemBibliotecaDTO> livros = new ArrayList<>();
+        livros.add(new ItemBibliotecaDTO("LIVRO", livro.getId(), 1));
+        livros.add(new ItemBibliotecaDTO("LIVRO", livro2.getId(), 1));
+        livros.add(new ItemBibliotecaDTO("LIVRO", livro3.getId(), 1));
+        livros.add(new ItemBibliotecaDTO("LIVRO", livro4.getId(), 1));
 
         CriarEmprestimoDTO criarEmprestimoDTO = new CriarEmprestimoDTO(livros, cliente.getId(), java.sql.Date.valueOf(LocalDate.now().plusDays(7)));
 
         try {
             emprestimoService.criarEmprestimo(criarEmprestimoDTO);
-        } catch (LivrosAusentesException e) {
+        } catch (ItensAusentesException e) {
             e.printStackTrace();
         }
 

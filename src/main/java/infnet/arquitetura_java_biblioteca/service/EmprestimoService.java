@@ -2,8 +2,9 @@ package infnet.arquitetura_java_biblioteca.service;
 
 import infnet.arquitetura_java_biblioteca.domain.Cliente;
 import infnet.arquitetura_java_biblioteca.domain.Emprestimo;
-import infnet.arquitetura_java_biblioteca.domain.Livro;
+import infnet.arquitetura_java_biblioteca.domain.ItemBiblioteca;
 import infnet.arquitetura_java_biblioteca.domain.dtos.CriarEmprestimoDTO;
+import infnet.arquitetura_java_biblioteca.domain.dtos.ItemBibliotecaDTO;
 import infnet.arquitetura_java_biblioteca.domain.enums.EmprestimoStatus;
 import infnet.arquitetura_java_biblioteca.exceptions.*;
 import infnet.arquitetura_java_biblioteca.repository.EmprestimoRepository;
@@ -19,38 +20,34 @@ public class EmprestimoService {
     @Autowired
     private EmprestimoRepository emprestimoRepository;
     @Autowired
-    private LivroService livroService;
-    @Autowired
     private ClienteService clienteService;
+    @Autowired
+    private ItemBibliotecaService itemBibliotecaService;
 
     @Transactional()
-    public Emprestimo criarEmprestimo(CriarEmprestimoDTO criarEmprestimoDTO) throws LivrosAusentesException {
-        if (criarEmprestimoDTO.livros().isEmpty()) throw new LivrosNaoInformadosException("Nenhum livro informado.");
-
-        List<Livro> listaLivros = (List<Livro>) this.livroService.buscarLivrosPorId(
-                criarEmprestimoDTO.livros().keySet().stream().toList()
-        );
-        if (listaLivros.size() != criarEmprestimoDTO.livros().size()) {
-            List<Long> idsEncontrados = listaLivros.stream()
-                    .map(Livro::getId)
+    public Emprestimo criarEmprestimo(CriarEmprestimoDTO criarEmprestimoDTO) throws ItensAusentesException {
+        if (criarEmprestimoDTO.itensBiblioteca().isEmpty()) throw new ItensNaoInformados("Nenhum livro informado.");
+        List<ItemBiblioteca> itensBibliotecas = criarEmprestimoDTO.itensBiblioteca().stream()
+                .map(itemBibliotecaDTO -> this.itemBibliotecaService.buscarPorId(itemBibliotecaDTO.id()))
+                .toList();
+        if (itensBibliotecas.size() != criarEmprestimoDTO.itensBiblioteca().size()) {
+//            Identifica IDs ausentes na lista de itens buscados na service e retorna os que não foram encontrados
+            List<ItemBibliotecaDTO> idsAusentes = criarEmprestimoDTO.itensBiblioteca().stream()
+                    .filter(itemBibliotecaDTO -> itensBibliotecas.stream().noneMatch(itemBiblioteca -> itemBiblioteca.getId().equals(itemBibliotecaDTO.id())))
                     .toList();
-            List<Long> idsAusentes = criarEmprestimoDTO.livros().keySet().stream()
-                    .filter(id -> !idsEncontrados.contains(id))
-                    .toList();
-            throw new LivrosAusentesException("Nem todos os livros informados foram encontrados, verifique-os IDs enviados e tente novamente", idsAusentes);
+            throw new ItensAusentesException("Os seguintes itens não foram encontrados: ", idsAusentes);
         }
 
-        Cliente cliente = this.clienteService.buscarCliente(criarEmprestimoDTO.usuarioId());
-        if (cliente == null) throw new ClienteNaoEncontradoException("Cliente não encontrado.");
+        Cliente cliente = this.clienteService.buscarCliente(criarEmprestimoDTO.usuarioId()).orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado."));
 
-        criarEmprestimoDTO.livros().forEach((id, quantidade) -> this.livroService.diminuirEstoqueLivro(id, quantidade));
+        this.itemBibliotecaService.subtrairEstoqueLivro(criarEmprestimoDTO.itensBiblioteca());
 
         Emprestimo emprestimo = new Emprestimo();
-        emprestimo.setLivros(listaLivros);
-        emprestimo.setDataEmprestimo(new Date());
-        emprestimo.setDataDevolucao(criarEmprestimoDTO.dataDevolucao());
         emprestimo.setCliente(cliente);
+        emprestimo.setItensBiblioteca(itensBibliotecas);
+        emprestimo.setDataEmprestimo(new Date());
         emprestimo.setStatus(EmprestimoStatus.INICIADO);
+        emprestimo.setDataDevolucao(criarEmprestimoDTO.dataDevolucao());
         return this.emprestimoRepository.save(emprestimo);
     }
 

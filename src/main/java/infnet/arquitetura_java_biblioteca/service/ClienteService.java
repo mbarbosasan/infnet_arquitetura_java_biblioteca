@@ -5,6 +5,8 @@ import infnet.arquitetura_java_biblioteca.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ClienteService {
 
@@ -15,8 +17,8 @@ public class ClienteService {
         return this.clienteRepository.save(cliente);
     }
 
-    public Cliente buscarCliente(Long id) {
-        return this.clienteRepository.findById(id).orElse(null);
+    public Optional<Cliente> buscarCliente(Long id) {
+        return this.clienteRepository.findById(id);
     }
 
 }

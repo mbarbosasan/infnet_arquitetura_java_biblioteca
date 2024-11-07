@@ -9,7 +9,6 @@ import infnet.arquitetura_java_biblioteca.service.EmprestimoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,13 +21,13 @@ public class EmprestimoController {
     private EmprestimoService emprestimoService;
 
     @PostMapping
-    public ResponseEntity<?> criarEmprestimo(@Validated @RequestBody CriarEmprestimoDTO criarEmprestimoDTO) {
+    public ResponseEntity<?> criarEmprestimo(@Valid @RequestBody CriarEmprestimoDTO criarEmprestimoDTO) {
         try {
             return ResponseEntity.ok(this.emprestimoService.criarEmprestimo(criarEmprestimoDTO));
-        } catch (LivrosAusentesException e) {
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), e.getLivrosAusentes()));
-        } catch (LivrosNaoInformadosException | ClienteNaoEncontradoException | LivroNaoEncontradoException |
-                 LivroSemEstoqueException e) {
+        } catch (ItensAusentesException e) {
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), e.getItensAusentes()));
+        } catch (ItensNaoInformados | ClienteNaoEncontradoException | ItemNaoEncontradoException |
+                 ItemSemEstoque e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();

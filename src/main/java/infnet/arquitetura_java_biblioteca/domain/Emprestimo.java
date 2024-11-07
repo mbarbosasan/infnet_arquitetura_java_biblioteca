@@ -33,27 +33,25 @@ public class Emprestimo {
     @JsonIgnore
     private Cliente cliente;
 
-    @NotNull(message = "Livros são obrigatórios")
+    @NotNull(message = "Itens são obrigatórios")
     @ManyToMany
     @JoinTable(
             name = "emprestimo_livro",
             joinColumns = @JoinColumn(name = "emprestimo_id"),
-            inverseJoinColumns = @JoinColumn(name = "livro_id")
+            inverseJoinColumns = @JoinColumn(name = "item_biblioteca_id")
     )
-    private List<Livro> livros;
+    private List<ItemBiblioteca> itensBiblioteca;
 
     public Emprestimo() {
     }
 
-
-    public Emprestimo(Long id, Date dataEmprestimo, Date dataDevolucao, EmprestimoStatus status, Date dataDevolucaoEfetivada, Cliente cliente, List<Livro> livros) {
-        this.id = id;
+    public Emprestimo(Date dataEmprestimo, Date dataDevolucao, EmprestimoStatus status, Date dataDevolucaoEfetivada, Cliente cliente, List<ItemBiblioteca> itensBiblioteca) {
         this.dataEmprestimo = dataEmprestimo;
         this.dataDevolucao = dataDevolucao;
         this.status = status;
         this.dataDevolucaoEfetivada = dataDevolucaoEfetivada;
         this.cliente = cliente;
-        this.livros = livros;
+        this.itensBiblioteca = itensBiblioteca;
     }
 
     public Long getId() {
@@ -80,12 +78,12 @@ public class Emprestimo {
         this.dataDevolucao = dataDevolucao;
     }
 
-    public List<Livro> getLivros() {
-        return livros;
+    public @NotNull(message = "Livros são obrigatórios") List<ItemBiblioteca> getItensBiblioteca() {
+        return itensBiblioteca;
     }
 
-    public void setLivros(List<Livro> livros) {
-        this.livros = livros;
+    public void setItensBiblioteca(@NotNull(message = "Itens são obrigatórios") List<ItemBiblioteca> itensBiblioteca) {
+        this.itensBiblioteca = itensBiblioteca;
     }
 
     public @NotNull Cliente getCliente() {
