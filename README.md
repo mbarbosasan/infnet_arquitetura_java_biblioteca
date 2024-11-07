@@ -10,8 +10,7 @@ O sistema de biblioteca será utilizado para gerenciar as operações triviais d
 cadastro de livros, cadastro de clientes, empréstimos de livros, devolução de livros, etc.
 
 Todo o projeto será desenvolvido utilizando a linguagem de programação Java, com o framework Spring Boot, como proposto
-em relação as interfaces gráficas, estarei utilizando o Vaadin para fins de experimentação, caso eu tenha problemas provavelmente irei
-para o Angular.
+em relação as interfaces gráficas estarei utilizando o Angular + PrimeNG
 
 ## Roadmap
 
