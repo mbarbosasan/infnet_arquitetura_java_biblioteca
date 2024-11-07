@@ -1,21 +1,21 @@
 package infnet.arquitetura_java_biblioteca.exceptions;
 
-import infnet.arquitetura_java_biblioteca.domain.dtos.ItemBibliotecaDTO;
+import java.util.HashMap;
 
 public class ItemSemEstoque extends RuntimeException {
 
-    ItemBibliotecaDTO itemBiblioteca;
+    HashMap<Long, Integer> itemBiblioteca;
 
-    public ItemSemEstoque(String message, ItemBibliotecaDTO itemBiblioteca) {
+    public ItemSemEstoque(String message, HashMap<Long, Integer> itemBiblioteca) {
         super(message);
 
     }
 
-    public ItemBibliotecaDTO getItemBiblioteca() {
+    public HashMap<Long, Integer> getItemBiblioteca() {
         return itemBiblioteca;
     }
 
-    public void setItemBiblioteca(ItemBibliotecaDTO itemBiblioteca) {
+    public void setItemBiblioteca(HashMap<Long, Integer> itemBiblioteca) {
         this.itemBiblioteca = itemBiblioteca;
     }
 }

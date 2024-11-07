@@ -1,19 +1,17 @@
 package infnet.arquitetura_java_biblioteca.exceptions;
 
-import infnet.arquitetura_java_biblioteca.domain.dtos.ItemBibliotecaDTO;
-
 import java.util.List;
 
 public class ItensAusentesException extends Exception {
 
-    List<ItemBibliotecaDTO> itensAusentes;
+    List<Long> itensAusentes;
 
-    public ItensAusentesException(String message, List<ItemBibliotecaDTO> livros) {
+    public ItensAusentesException(String message, List<Long> livros) {
         super(message);
         this.itensAusentes = livros;
     }
 
-    public List<ItemBibliotecaDTO> getItensAusentes() {
+    public List<Long> getItensAusentes() {
         return itensAusentes;
     }
 }

@@ -3,7 +3,6 @@ package infnet.arquitetura_java_biblioteca.controllers;
 import infnet.arquitetura_java_biblioteca.domain.ItemBiblioteca;
 import infnet.arquitetura_java_biblioteca.domain.Livro;
 import infnet.arquitetura_java_biblioteca.domain.Revista;
-import infnet.arquitetura_java_biblioteca.domain.dtos.ModificarEstoqueDTO;
 import infnet.arquitetura_java_biblioteca.exceptions.AutorNaoEncontradoException;
 import infnet.arquitetura_java_biblioteca.exceptions.ItemNaoEncontradoException;
 import infnet.arquitetura_java_biblioteca.service.ItemBibliotecaService;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -55,9 +55,9 @@ public class ItemBibliotecaController {
     }
 
     @PostMapping("/aumentar-estoque")
-    public ResponseEntity<?> aumentarEstoqueLivro(@Valid @RequestBody ModificarEstoqueDTO aumentarEstoqueDTO) {
+    public ResponseEntity<?> aumentarEstoqueLivro(@Valid @RequestBody HashMap<Long, Integer> itensBiblioteca) {
         try {
-            this.itemBibliotecaService.aumentarEstoqueLivro(aumentarEstoqueDTO);
+            this.itemBibliotecaService.aumentarEstoqueLivro(itensBiblioteca);
             return ResponseEntity.ok("Estoque aumentado com sucesso.");
         } catch (ItemNaoEncontradoException e) {
             return ResponseEntity.badRequest().body(e);

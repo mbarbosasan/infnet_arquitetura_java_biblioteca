@@ -4,8 +4,6 @@ import infnet.arquitetura_java_biblioteca.domain.Autor;
 import infnet.arquitetura_java_biblioteca.domain.ItemBiblioteca;
 import infnet.arquitetura_java_biblioteca.domain.Livro;
 import infnet.arquitetura_java_biblioteca.domain.Revista;
-import infnet.arquitetura_java_biblioteca.domain.dtos.ItemBibliotecaDTO;
-import infnet.arquitetura_java_biblioteca.domain.dtos.ModificarEstoqueDTO;
 import infnet.arquitetura_java_biblioteca.exceptions.AutorNaoEncontradoException;
 import infnet.arquitetura_java_biblioteca.exceptions.ItemNaoEncontradoException;
 import infnet.arquitetura_java_biblioteca.exceptions.ItemSemEstoque;
@@ -14,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -42,21 +41,21 @@ public class ItemBibliotecaService {
         return this.itemBibliotecaRepository.findAll();
     }
 
-    public void aumentarEstoqueLivro(ModificarEstoqueDTO modificarEstoqueDTO) {
-        modificarEstoqueDTO.itensBiblioteca().forEach((itemBibliotecaDTO) -> {
-            ItemBiblioteca itemBiblioteca = this.itemBibliotecaRepository.findById(itemBibliotecaDTO.id()).orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado", itemBibliotecaDTO.id()));
-            itemBiblioteca.setQuantidade(itemBiblioteca.getQuantidade() + itemBibliotecaDTO.quantidade());
+    public void aumentarEstoqueLivro(HashMap<Long, Integer> itensBibliotecas) {
+        itensBibliotecas.forEach((id, quantidade) -> {
+            ItemBiblioteca itemBiblioteca = this.itemBibliotecaRepository.findById(id).orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado", id));
+            itemBiblioteca.setQuantidade(itemBiblioteca.getQuantidade() + quantidade);
             this.itemBibliotecaRepository.save(itemBiblioteca);
         });
     }
 
-    public void subtrairEstoqueLivro(List<ItemBibliotecaDTO> itensBiblioteca) {
-        itensBiblioteca.forEach((itemBibliotecaDTO) -> {
-            ItemBiblioteca itemBiblioteca = this.itemBibliotecaRepository.findById(itemBibliotecaDTO.id()).orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado", itemBibliotecaDTO.id()));
-            if (itemBiblioteca.getQuantidade() < itemBibliotecaDTO.quantidade()) {
-                throw new ItemSemEstoque(MessageFormat.format("Não foi possível iniciar o empréstimo pois não há estoque suficiente para o item {0}, estando apenas com {1} unidades", itemBiblioteca.getTitulo(), itemBiblioteca.getQuantidade()), itemBibliotecaDTO);
+    public void subtrairEstoqueLivro(HashMap<Long, Integer> itensBiblioteca) {
+        itensBiblioteca.forEach((id, quantidade) -> {
+            ItemBiblioteca itemBiblioteca = this.itemBibliotecaRepository.findById(id).orElseThrow(() -> new ItemNaoEncontradoException("Item não encontrado", id));
+            if (itemBiblioteca.getQuantidade() < quantidade || itemBiblioteca.getQuantidade() == 0) {
+                throw new ItemSemEstoque(MessageFormat.format("Item {0} sem estoque", itemBiblioteca.getTitulo()), itensBiblioteca);
             }
-            itemBiblioteca.setQuantidade(itemBiblioteca.getQuantidade() - itemBibliotecaDTO.quantidade());
+            itemBiblioteca.setQuantidade(itemBiblioteca.getQuantidade() - quantidade);
             this.itemBibliotecaRepository.save(itemBiblioteca);
         });
     }

@@ -4,7 +4,6 @@ import infnet.arquitetura_java_biblioteca.domain.Cliente;
 import infnet.arquitetura_java_biblioteca.domain.Emprestimo;
 import infnet.arquitetura_java_biblioteca.domain.ItemBiblioteca;
 import infnet.arquitetura_java_biblioteca.domain.dtos.CriarEmprestimoDTO;
-import infnet.arquitetura_java_biblioteca.domain.dtos.ItemBibliotecaDTO;
 import infnet.arquitetura_java_biblioteca.domain.enums.EmprestimoStatus;
 import infnet.arquitetura_java_biblioteca.exceptions.*;
 import infnet.arquitetura_java_biblioteca.repository.EmprestimoRepository;
@@ -27,15 +26,15 @@ public class EmprestimoService {
     @Transactional()
     public Emprestimo criarEmprestimo(CriarEmprestimoDTO criarEmprestimoDTO) throws ItensAusentesException {
         if (criarEmprestimoDTO.itensBiblioteca().isEmpty()) throw new ItensNaoInformados("Nenhum livro informado.");
-        List<ItemBiblioteca> itensBibliotecas = criarEmprestimoDTO.itensBiblioteca().stream()
-                .map(itemBibliotecaDTO -> this.itemBibliotecaService.buscarPorId(itemBibliotecaDTO.id()))
+        List<ItemBiblioteca> itensBibliotecas = criarEmprestimoDTO.itensBiblioteca().keySet().stream()
+                .map(this.itemBibliotecaService::buscarPorId)
                 .toList();
         if (itensBibliotecas.size() != criarEmprestimoDTO.itensBiblioteca().size()) {
 //            Identifica IDs ausentes na lista de itens buscados na service e retorna os que não foram encontrados
-            List<ItemBibliotecaDTO> idsAusentes = criarEmprestimoDTO.itensBiblioteca().stream()
-                    .filter(itemBibliotecaDTO -> itensBibliotecas.stream().noneMatch(itemBiblioteca -> itemBiblioteca.getId().equals(itemBibliotecaDTO.id())))
+            List<Long> idsAusentes = criarEmprestimoDTO.itensBiblioteca().keySet().stream()
+                    .filter(id -> itensBibliotecas.stream().noneMatch(itemBiblioteca -> itemBiblioteca.getId().equals(id)))
                     .toList();
-            throw new ItensAusentesException("Os seguintes itens não foram encontrados: ", idsAusentes);
+            throw new ItensAusentesException("Itens não encontrados.", idsAusentes);
         }
 
         Cliente cliente = this.clienteService.buscarCliente(criarEmprestimoDTO.usuarioId()).orElseThrow(() -> new ClienteNaoEncontradoException("Cliente não encontrado."));

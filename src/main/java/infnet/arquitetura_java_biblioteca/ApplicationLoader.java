@@ -2,7 +2,6 @@ package infnet.arquitetura_java_biblioteca;
 
 import infnet.arquitetura_java_biblioteca.domain.*;
 import infnet.arquitetura_java_biblioteca.domain.dtos.CriarEmprestimoDTO;
-import infnet.arquitetura_java_biblioteca.domain.dtos.ItemBibliotecaDTO;
 import infnet.arquitetura_java_biblioteca.exceptions.ItensAusentesException;
 import infnet.arquitetura_java_biblioteca.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 
 
 @Component
@@ -59,11 +57,11 @@ public class ApplicationLoader implements ApplicationRunner {
         Cliente cliente = new Cliente("Moises Santos", "Rua das Flores, 123", "8599999999", "moises@mail.com", null);
         clienteService.criarCliente(cliente);
 
-        List<ItemBibliotecaDTO> livros = new ArrayList<>();
-        livros.add(new ItemBibliotecaDTO("LIVRO", livro.getId(), 1));
-        livros.add(new ItemBibliotecaDTO("LIVRO", livro2.getId(), 1));
-        livros.add(new ItemBibliotecaDTO("LIVRO", livro3.getId(), 1));
-        livros.add(new ItemBibliotecaDTO("LIVRO", livro4.getId(), 1));
+        HashMap<Long, Integer> livros = new HashMap<>();
+        livros.put(livro.getId(), 1);
+        livros.put(livro2.getId(), 1);
+        livros.put(livro3.getId(), 1);
+        livros.put(livro4.getId(), 1);
 
         CriarEmprestimoDTO criarEmprestimoDTO = new CriarEmprestimoDTO(livros, cliente.getId(), java.sql.Date.valueOf(LocalDate.now().plusDays(7)));
 
