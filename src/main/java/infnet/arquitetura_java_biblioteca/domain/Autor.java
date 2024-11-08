@@ -1,6 +1,6 @@
 package infnet.arquitetura_java_biblioteca.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -17,8 +17,11 @@ public class Autor {
     private String nome;
 
     @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonBackReference
     private List<Livro> livros;
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean deletado = false;
 
     public Autor() {
     }
@@ -50,5 +53,13 @@ public class Autor {
 
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
+    }
+
+    public Boolean getDeletado() {
+        return deletado;
+    }
+
+    public void setDeletado(Boolean deletado) {
+        this.deletado = deletado;
     }
 }

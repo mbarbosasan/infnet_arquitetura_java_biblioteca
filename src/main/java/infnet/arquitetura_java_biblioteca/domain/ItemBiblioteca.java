@@ -32,6 +32,8 @@ public abstract class ItemBiblioteca {
     @Min(value = 0, message = "A quantidade deve ser maior ou igual a 0")
     private Integer quantidade;
 
+    private Boolean deletado = false;
+
     public ItemBiblioteca() {
     }
 
@@ -98,5 +100,13 @@ public abstract class ItemBiblioteca {
 
     public void setQuantidade(@Min(value = 0, message = "A quantidade deve ser maior ou igual a 0") Integer quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public Boolean getDeletado() {
+        return deletado;
+    }
+
+    public void setDeletado(Boolean deletado) {
+        this.deletado = deletado;
     }
 }

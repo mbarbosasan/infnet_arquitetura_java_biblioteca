@@ -20,9 +20,20 @@ public class AutorController {
     @PostMapping
     public ResponseEntity<?> criarAutor(@Valid @RequestBody Autor autor) {
         try {
-            return ResponseEntity.ok(this.autorService.criarAutor(autor));
+            this.autorService.criarAutor(autor);
+            return ResponseEntity.ok("Autor cadastrado com sucesso.");
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body("Já existe um autor com esse nome, escolha outro.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarAutor(@PathVariable("id") Long id) {
+        try {
+            this.autorService.deletarAutor(id);
+            return ResponseEntity.ok("Autor deletado com sucesso.");
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
