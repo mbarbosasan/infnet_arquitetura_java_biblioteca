@@ -1,12 +1,12 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { delay, map, catchError, of, startWith, combineLatestWith } from 'rxjs';
-import { LivrosService } from '../../../core/services/livros.service';
+import { ItemBibliotecaService } from '../../../core/services/item-biblioteca.service';
 import { AsyncPipe } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CardLivroComponent } from '../ui/card-livro/card-livro.component';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CarrinhoService } from '../../../core/services/carrinho.service';
-import { Livro } from '../../../core/model/Livro';
+import { ItemBiblioteca } from '../../../core/model/Livro';
 
 @Component({
   selector: 'app-listagem',
@@ -20,7 +20,7 @@ import { Livro } from '../../../core/model/Livro';
   styleUrl: './listagem.component.css'
 })
 export class ListagemComponent {
-  livroService = inject(LivrosService)
+  livroService = inject(ItemBibliotecaService)
   carrinhoService = inject(CarrinhoService)
   filter = input<string | null>('');
   filter$ = toObservable(this.filter);
@@ -28,19 +28,21 @@ export class ListagemComponent {
     combineLatestWith(this.filter$),
     map(([livros, filter]) => {
       if (!filter) {
-        return { loading: false, livros }
+        return { loading: false, error: false, livros }
       }
       console.log(filter)
       return {
         loading: false,
+        error: false,
         livros: livros.filter(livro => livro.titulo.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
       }
     }),
-    startWith({ loading: true, livros: [] }),
+    catchError(() => of({ loading: false, error: true, livros: [], })),
+    startWith({ loading: false, error: false, livros: [] }),
   )
 
 
-  adicionarAoCarrinho(livro: Livro) {
+  adicionarAoCarrinho(livro: ItemBiblioteca) {
     this.carrinhoService.adicionarCarrinho(livro)
   }
 }

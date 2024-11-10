@@ -1,4 +1,4 @@
-<ul class="flex flex-wrap gap-1 justify-content-start list-none surface-ground flex-1 flex-grow-1 shadow-1 p-2">
+<section class="grid-lista-livros">
   @if (livros$ | async; as livrosState) {
     @if (livrosState.loading) {
       <p-skeleton height="30rem" class="flex-1"/>
@@ -25,5 +25,10 @@
           }
         }
     }
+    @if (livrosState.error) {
+      <div class="flex flex-column align-items-center justify-content-center w-full">
+        <p>Houve um erro ao tentar buscar os itens, por favor, tente novamente mais tarde.</p>
+      </div>
+    }
   }
-  </ul> 
+  </section> 

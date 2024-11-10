@@ -2,3 +2,19 @@
   flex: 1 1 300px;
   width: max-content;
 }
+
+.descricao {
+  width: 100%;
+  height: 100px;
+  overflow-y: scroll;
+}
+
+.titulo {
+  height: 60px;
+}
+
+.imagem_capa{
+  display: block;
+  width: 100%;
+  max-height: 400px;
+}

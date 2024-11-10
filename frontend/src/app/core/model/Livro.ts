@@ -1,11 +1,20 @@
-export interface Livro {
-  titulo: string;
-  autor: {
-    nome: string;
-    id: number;
-  };
-  dataPublicacao: string;
-  editora: string;
-  genero: string;
-  quantidade: number;
+import { Editora } from "./Editora"
+
+export interface ItemBiblioteca {
+  id: number
+  titulo: string,
+  descricao: string,
+  generos: string,
+  imagem_capa: string,
+  quantidade: number,
+  deletado: boolean,
+  dataPublicacao: string,
+}
+
+export interface Livro extends ItemBiblioteca {
+  isbn: string,
+}
+
+export interface Revista extends ItemBiblioteca {
+  issn: string,
 }

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { LivrosService } from './core/services/livros.service';
+import { ItemBibliotecaService } from './core/services/item-biblioteca.service';
 import { catchError, map, of, startWith } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { BaseComponent } from "./layout/base/base.component";
