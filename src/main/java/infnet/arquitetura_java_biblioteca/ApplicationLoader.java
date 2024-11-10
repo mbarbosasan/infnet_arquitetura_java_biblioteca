@@ -32,13 +32,14 @@ public class ApplicationLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         Autor aldousHuxley = autorService.criarAutor(new Autor("Aldous Huxley", null));
+        Autor georgeOrwell = autorService.criarAutor(new Autor("George Orwell", null));
         Autor douglasAdams = autorService.criarAutor(new Autor("Douglas Adams", null));
         Autor edgarAllanPoe = autorService.criarAutor(new Autor("Edgar Allan Poe", null));
 
-        Livro livro = new Livro("Admirável Mundo Novo", "Ficção Científica", "Muito bom", "https://google.com.br", LocalDate.of(1932, 1, 1), 50, aldousHuxley, "123456");
-        Livro livro2 = new Livro("1984", "Ficção Científica", "Muito bom", "https://google.com.br", LocalDate.of(1949, 1, 1), 50, aldousHuxley, "123456");
-        Livro livro3 = new Livro("O mochileiro das galaxias", "Ficção Científica", "Muito bom", "https://google.com.br", LocalDate.of(1979, 1, 1), 50, douglasAdams, "123456");
-        Livro livro4 = new Livro("O corvo", "Terror", "Muito bom", "https://google.com.br", LocalDate.of(1845, 1, 1), 50, edgarAllanPoe, "123456");
+        Livro livro = new Livro("Admirável Mundo Novo", "Ficção Científica", "Admirável Mundo Novo é um romance escrito por Aldous Huxley e publicado em 1932. A história se passa em Londres no ano 2540, o romance antecipa desenvolvimentos em tecnologia reprodutiva, hipnopedia, manipulação psicológica e condicionamento clássico, que se combinam para mudar profundamente a sociedade.", "https://martinsfontespaulista.vteximg.com.br/arquivos/ids/160764-511-511/725912_ampliada.jpg?v=637260563818600000", LocalDate.of(1932, 1, 1), 50, aldousHuxley, "123456");
+        Livro livro2 = new Livro("1984", "Ficção Científica", "Mil novecentos e oitenta e quatro é um romance distópico do escritor inglês George Orwell. Foi publicado em 8 de junho de 1949 pela Secker & Warburg como o nono e último livro de Orwell concluído em vida.", "https://m.media-amazon.com/images/I/511vWdI8zKL._AC_UF1000,1000_QL80_.jpg", LocalDate.of(1949, 1, 1), 50, georgeOrwell, "123456");
+        Livro livro3 = new Livro("O Guia do Mochileiro das Galáxias", "Ficção Científica", "Segundos antes de a Terra ser destruída para dar lugar a uma via expressa interespacial, Arthur Dent é salvo por Ford Prefect, um E.T. que fazia pesquisa de campo para a nova edição de O Guia do Mochileiro das Galáxias. Pegando carona numa nave alienígena, os dois dão início a uma alucinante viagem pelo tempo e pelo espaço.", "https://m.media-amazon.com/images/I/71K0ACNXURL._SY466_.jpg", LocalDate.of(1979, 1, 1), 50, douglasAdams, "123456");
+        Livro livro4 = new Livro("O corvo e outros contos extraordinários", "Terror", "O Corvo e contos extraordinários é uma seleção dos textos mais expressivos do autor considerado o mestre do mistério e procura mostrar o gênio criativo de um dos mais conhecidos escritores americanos. Além dos contos, como 'A queda da Casa de Usher', 'O poço e o pêndulo' e 'O gato preto', este volume também traz a tradução do poema 'O Corvo' feita por Fernando Pessoa.", "https://m.media-amazon.com/images/I/71L9UogcMcL._SY466_.jpg", LocalDate.of(1845, 1, 1), 50, edgarAllanPoe, "123456");
 
         itemBibliotecaService.cadastrarItemBiblioteca(livro, aldousHuxley.getId());
         itemBibliotecaService.cadastrarItemBiblioteca(livro2, aldousHuxley.getId());
@@ -48,8 +49,8 @@ public class ApplicationLoader implements ApplicationRunner {
         Editora useACabeca = editoraService.cadastrarEditora(new Editora("Use a Cabeça", null));
         Editora oRlly = editoraService.cadastrarEditora(new Editora("O' Rlly?", null));
 
-        Revista revista = new Revista("Java: Guia do Aprendiz para programação no mundo real", "Tecnologia", "Muito bom", "https://google.com.br", LocalDate.of(2021, 1, 1), 50, useACabeca, "123456");
-        Revista revista2 = new Revista("Trying things until it works", "Tecnologia", "Muito bom", "https://google.com.br", LocalDate.of(2021, 1, 1), 50, oRlly, "123456");
+        Revista revista = new Revista("Java: Guia do Aprendiz para programação no mundo real", "Tecnologia", "O “Use a Cabeça Java” é uma experiência completa de aprendizado em Java e programação orientada a objetos. Com este livro, você aprenderá a linguagem Java de um jeito único, que ultrapassa os manuais de instruções, ajudando-o a se tornar um programador excelente.", "https://m.media-amazon.com/images/I/610D1O8WWOL._SY342_.jpg", LocalDate.of(2021, 1, 1), 50, useACabeca, "123456");
+        Revista revista2 = new Revista("Trying stuff until it works", "Tecnologia", "Trying stuff until it works", "https://m.media-amazon.com/images/I/61jelQK-thL._SY466_.jpg", LocalDate.of(2021, 1, 1), 50, oRlly, "123456");
 
         itemBibliotecaService.cadastrarItemBiblioteca(revista, useACabeca.getId());
         itemBibliotecaService.cadastrarItemBiblioteca(revista2, oRlly.getId());

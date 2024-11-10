@@ -21,6 +21,7 @@ public abstract class ItemBiblioteca {
     private String generos;
 
     @NotNull(message = "O campo descrição é obrigatório")
+    @Column(columnDefinition = "VARCHAR(1000)")
     private String descricao;
 
     @NotNull(message = "O campo imagem_capa é obrigatório")
