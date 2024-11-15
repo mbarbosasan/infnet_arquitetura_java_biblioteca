@@ -1,12 +1,13 @@
 package infnet.arquitetura_java_biblioteca.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 @Entity()
-public class Generos {
+public class Genero {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,12 +16,13 @@ public class Generos {
     private String nome;
 
     @ManyToMany(mappedBy = "generos")
+    @JsonBackReference
     private List<ItemBiblioteca> itensBiblioteca;
 
-    public Generos() {
+    public Genero() {
     }
 
-    public Generos(String nome, List<ItemBiblioteca> itensBiblioteca) {
+    public Genero(String nome, List<ItemBiblioteca> itensBiblioteca) {
         this.nome = nome;
         this.itensBiblioteca = itensBiblioteca;
     }

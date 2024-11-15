@@ -7,6 +7,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("REVISTA")
@@ -22,7 +23,7 @@ public class Revista extends ItemBiblioteca {
     public Revista() {
     }
 
-    public Revista(String titulo, String generos, String descricao, String imagem_capa, LocalDate dataPublicacao, Integer quantidade, Editora editora, String issn) {
+    public Revista(String titulo, List<Genero> generos, String descricao, String imagem_capa, LocalDate dataPublicacao, Integer quantidade, Editora editora, String issn) {
         super(titulo, generos, descricao, imagem_capa, dataPublicacao, quantidade);
         this.editora = editora;
         this.issn = issn;

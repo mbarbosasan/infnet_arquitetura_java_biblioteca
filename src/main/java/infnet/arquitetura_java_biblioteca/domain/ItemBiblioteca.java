@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -18,7 +19,13 @@ public abstract class ItemBiblioteca {
     private String titulo;
 
     @NotNull(message = "O campo generos é obrigatório")
-    private String generos;
+    @ManyToMany
+    @JoinTable(
+            name = "item_genero",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "genero_id")
+    )
+    private List<Genero> generos;
 
     @NotNull(message = "O campo descrição é obrigatório")
     @Column(columnDefinition = "VARCHAR(1000)")
@@ -38,7 +45,7 @@ public abstract class ItemBiblioteca {
     public ItemBiblioteca() {
     }
 
-    public ItemBiblioteca(String titulo, String generos, String descricao, String imagem_capa, LocalDate dataPublicacao, Integer quantidade) {
+    public ItemBiblioteca(String titulo, List<Genero> generos, String descricao, String imagem_capa, LocalDate dataPublicacao, Integer quantidade) {
         this.titulo = titulo;
         this.generos = generos;
         this.descricao = descricao;
@@ -63,11 +70,11 @@ public abstract class ItemBiblioteca {
         this.titulo = titulo;
     }
 
-    public @NotNull(message = "O campo generos é obrigatório") String getGeneros() {
+    public @NotNull(message = "O campo generos é obrigatório") List<Genero> getGeneros() {
         return generos;
     }
 
-    public void setGeneros(@NotNull(message = "O campo generos é obrigatório") String generos) {
+    public void setGeneros(@NotNull(message = "O campo generos é obrigatório") List<Genero> generos) {
         this.generos = generos;
     }
 
