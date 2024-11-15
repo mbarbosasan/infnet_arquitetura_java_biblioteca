@@ -37,8 +37,8 @@ export class ListagemComponent {
         livros: livros.filter(livro => livro.titulo.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
       }
     }),
-    catchError(() => of({ loading: false, error: true, livros: [], })),
-    startWith({ loading: false, error: false, livros: [] }),
+    catchError(() => of({ loading: false, error: true, livros: null, })),
+    startWith({ loading: false, error: false, livros: null }),
   )
 
 

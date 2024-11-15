@@ -4,7 +4,7 @@ export interface ItemBiblioteca {
   id: number
   titulo: string,
   descricao: string,
-  generos: string,
+  generos: {id: number, nome: string}[],
   imagem_capa: string,
   quantidade: number,
   deletado: boolean,

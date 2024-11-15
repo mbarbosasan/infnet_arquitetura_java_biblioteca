@@ -1,34 +1,29 @@
+@if (livros$ | async; as livrosState) {
 <section class="grid-lista-livros">
-  @if (livros$ | async; as livrosState) {
-    @if (livrosState.loading) {
-      <p-skeleton height="30rem" class="flex-1"/>
-      <p-skeleton height="30rem" class="flex-1"/>
-      <p-skeleton height="30rem" class="flex-1"/>
-    }
-    @if (!livrosState.loading && !livrosState.livros) {
-      <p>Nao há livros para serem exibidos, tente novamente.</p>
-    }
-    @if (!livrosState.loading && livrosState.livros) {
-        @for (livro of livrosState.livros; track $index) {
-          <app-card-livro [livro]="livro" (adicionarCarrinhoEvent)="adicionarAoCarrinho($event)"></app-card-livro>
-        } @empty {
-          @if (filter()) {
-            <div class="flex flex-column align-items-center justify-content-center w-full">
-              <p>Infelizmente nenhum livro foi encontrado =(</p>
-              <p>Se você acredita que isso seja um erro tente refinar sua pesquisa ou carregar a página novamente.</p>
-            </div>
-          } @else {
-            <div class="flex flex-column align-items-center justify-content-center w-full">
-              <p>Infelizmente nenhum livro foi encontrado =(</p>
-              <p>Se você acredita que isso seja um erro tente carregar a página novamente.</p>
-            </div>
-          }
-        }
-    }
-    @if (livrosState.error) {
-      <div class="flex flex-column align-items-center justify-content-center w-full">
-        <p>Houve um erro ao tentar buscar os itens, por favor, tente novamente mais tarde.</p>
-      </div>
-    }
+
+  @if (livrosState.loading) {
+    <p-skeleton height="30rem" class="flex-1"/>
+    <p-skeleton height="30rem" class="flex-1"/>
+    <p-skeleton height="30rem" class="flex-1"/>
   }
-  </section> 
+  @if (!livrosState.loading && !livrosState.livros) {
+    <p class="text-center">Nao há livros para serem exibidos, tente novamente.</p>
+  }
+  @if (!livrosState.loading && livrosState.livros) {
+      @for (livro of livrosState.livros; track $index) {
+        <app-card-livro [livro]="livro" (adicionarCarrinhoEvent)="adicionarAoCarrinho($event)"></app-card-livro>
+      } @empty {
+        @if (filter()) {
+          <div class="flex flex-column align-items-center justify-content-center w-full">
+            <p>Nenhum livro foi encontrado, tente refinar sua pesquisa.</p>
+          </div>
+        } @else {
+          <div class="flex flex-column align-items-center justify-content-center w-full">
+            <p>Infelizmente nenhum livro foi encontrado =(</p>
+            <p>Se você acredita que isso seja um erro tente carregar a página novamente.</p>
+          </div>
+        }
+      }
+  }
+</section> 
+}

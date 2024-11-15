@@ -8,8 +8,9 @@
   </div>
   <img [ngSrc]="livro().imagem_capa" class="imagem_capa" alt="Capa do livro" width="300" height="400" />
   <div class="flex flex-column gap-1 my-1">
-    <p-tag [value]="livro().generos" />
-    <p class="descricao">{{livro().descricao}}</p>
+    @for (genero of livro().generos; track $index) {
+      <p-tag [value]="genero.nome" />
+    }
   </div>
   <div>
     <button pButton icon="pi pi-shopping-cart" type="button" label="Adicionar ao carrinho" severity="primary" (click)="emitAdicionarcarrihoEvent()"></button>
