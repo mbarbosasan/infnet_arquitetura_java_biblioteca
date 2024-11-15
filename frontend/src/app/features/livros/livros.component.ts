@@ -3,9 +3,14 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { ListagemComponent } from "./listagem/listagem.component";
+import { ListagemComponent } from "./listagem-livros/listagem-livros.component";
 import { AsyncPipe } from '@angular/common';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs';
+import { DialogModule } from 'primeng/dialog';
+import { CadastroLivrosComponent } from './cadastro-livros/cadastro-livros.component';
+import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-livros',
@@ -16,8 +21,13 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     InputTextModule,
     IconFieldModule,
     InputIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ButtonModule,
+    DialogModule,
+    CadastroLivrosComponent,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './livros.component.html',
   styleUrl: './livros.component.css'
 })
@@ -27,6 +37,11 @@ export class LivrosComponent {
     debounceTime(300),
     distinctUntilChanged()
   );
+
+  reloadLivros = new Subject<void>();
+  
+  modalCadastroAberto = false;
   constructor() {
   }
+  
 }

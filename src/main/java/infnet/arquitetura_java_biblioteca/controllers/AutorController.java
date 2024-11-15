@@ -29,6 +29,15 @@ public class AutorController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> buscarAutores() {
+        try {
+            return ResponseEntity.ok(this.autorService.buscarAutores());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarAutor(@PathVariable("id") Long id) {
         try {

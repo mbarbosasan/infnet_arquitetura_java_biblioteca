@@ -1,0 +1,71 @@
+@if (!ehModal) {
+  <p class="text-2xl md:text-xl text-primary font-bold my-0">
+    Cadastro de Livros
+  </p>
+}
+
+<form [formGroup]="form" class="flex flex-column gap-1">
+  <label for="titulo">Título</label>
+  <input pInputText type="text" formControlName="titulo" placeholder="Dom casmurro" />
+  @if (form.controls['titulo'].invalid && form.controls['titulo'].touched) {
+    <small class="p-error">O título é obrigatório</small>
+  }
+  <label for="autor">Autor</label>
+  @if (autorState$ | async; as autorState) {
+    <p-dropdown [options]="autorState.autores" formControlName="autor" [loading]="autorState.loading" placeholder="Selecione o autor" optionLabel="nome" appendTo="body" styleClass="w-full"></p-dropdown>
+    @if (form.get('autor')?.invalid && form.get('autor')?.touched) {
+      <small class="p-error">O autor é obrigatório</small>
+    }
+  }
+  <label for="dataPublicacao">Data de Publicação</label>
+  <p-calendar formControlName="dataPublicacao" appendTo="body" styleClass="w-full" placeholder="01/01/1899"></p-calendar>
+  @if (form.get('dataPublicacao')?.invalid && form.get('dataPublicacao')?.touched) {
+    <small class="p-error">A data de publicação é obrigatória</small>
+  }
+  <label for="imagem_capa">Imagem de Capa</label>
+  <input pInputText type="text" formControlName="imagem_capa" placeholder="https://google.com/imagens/xpto_imagem.png" />
+  @if (form.get('imagem_capa')?.touched && form.get('imagem_capa')?.valid) {
+    @if (form.get('imagem_capa')?.valid) {
+      <div class="flex justify-content-center align-items-center flex-column w-full">
+        <small class="text-color-secondary">Pré-visualização</small>
+        <img [src]="form.get('imagem_capa')?.value" alt="Imagem de capa" width="60" height="60" />
+      </div>
+    }
+    @if (form.get('imagem_capa')?.getError('required')) {
+      <small class="p-error">A imagem de capa é obrigatória</small>
+    }
+    @if (form.get('imagem_capa')?.getError('pattern')) {
+      <small class="p-error">A imagem de capa deve ser uma URL válida</small>
+    }
+  }
+  
+  <label for="generos">Gêneros</label>
+  @if (generosState$ | async; as generosState) {
+    <p-multiSelect formControlName="generos" [options]="generosState.generos" [loading]="generosState.loading" optionLabel="nome" defaultLabel="Selecione um ou mais gêneros" appendTo="body" styleClass="w-full"></p-multiSelect>
+    @if (form.get('generos')?.invalid && form.get('generos')?.touched) {
+      <small class="p-error">O gênero é obrigatório</small>
+    } 
+  }
+  <label for="descricao">Sinopse</label>
+  <textarea pInputTextarea formControlName="descricao" placeholder="Sinopse do livro" class="w-full" rows="3"></textarea>
+  @if (form.get('descricao')?.invalid && form.get('descricao')?.touched) {
+    <small class="p-error">A sinopse é obrigatória</small>
+  }
+
+  <label for="isbn">ISBN</label>
+  <input pInputText type="text" formControlName="isbn" placeholder="1234567899" />
+  @if (form.get('isbn')?.invalid && form.get('isbn')?.touched) {
+    <small class="p-error">O ISBN é obrigatório</small>
+  }
+
+  <label for="quantidade">Quantidade disponível</label>
+  <p-inputNumber formControlName="quantidade" placeholder="10" mode="decimal" min="1" max="1000" styleClass="w-full"></p-inputNumber>
+  @if (form.get('quantidade')?.invalid && form.get('quantidade')?.touched) {  
+    <small class="p-error">A quantidade é obrigatória</small>
+  }
+
+  <div class="flex gap-1 w-full flex-wrap">
+    <button pButton type="button" label="Cancelar" class="p-button-secondary w-full"></button>
+    <button pButton type="button" label="Cadastrar" class="w-full" [disabled]="form.invalid" [loading]="loadingCadastro" (click)="cadastrarLivro(form)"></button>
+  </div>
+</form>

@@ -34,6 +34,10 @@ public class AutorService {
         this.autorRepository.save(autor);
     }
 
+    public Iterable<Autor> buscarAutores() {
+        return this.autorRepository.findAll();
+    }
+
     public Optional<Autor> buscarAutor(Long id) {
         return this.autorRepository.findById(id);
     }

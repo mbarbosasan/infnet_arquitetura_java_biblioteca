@@ -9,24 +9,27 @@ import { CarrinhoService } from '../../../core/services/carrinho.service';
 import { ItemBiblioteca } from '../../../core/model/Livro';
 
 @Component({
-  selector: 'app-listagem',
+  selector: 'app-listagem-livros',
   standalone: true,
   imports: [
     AsyncPipe,
     CardLivroComponent,
     SkeletonModule
   ],
-  templateUrl: './listagem.component.html',
-  styleUrl: './listagem.component.css'
+  templateUrl: './listagem-livros.component.html',
+  styleUrl: './listagem-livros.component.css'
 })
 export class ListagemComponent {
   livroService = inject(ItemBibliotecaService)
   carrinhoService = inject(CarrinhoService)
   filter = input<string | null>('');
+  reloadLivros = input();
   filter$ = toObservable(this.filter);
+  reloadLivros$ = toObservable(this.reloadLivros);
   livros$ = this.livroService.buscarLivros().pipe(
-    combineLatestWith(this.filter$),
-    map(([livros, filter]) => {
+    combineLatestWith(this.filter$, this.reloadLivros$),
+    map(([livros, filter, reloadLivros]) => {
+      console.log(livros)
       if (!filter) {
         return { loading: false, error: false, livros }
       }

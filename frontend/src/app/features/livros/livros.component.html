@@ -1,6 +1,13 @@
-
+<p-toast />
+<div class="w-full my-2">
+<button pButton type="button" label="Cadastrar Livro" (click)="modalCadastroAberto = true"></button>
 <p-iconField iconPosition="right">
   <input pInputText type="text" placeholder="Pesquisar" class="w-full my-2" [formControl]="filter"    />
   <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
 </p-iconField>
-<app-listagem [filter]="filter$ | async"></app-listagem>
+</div>
+<app-listagem-livros [filter]="filter$ | async" [reloadLivros]="reloadLivros.asObservable()"></app-listagem-livros>
+
+<p-dialog header="Cadastro de Livros" [(visible)]="modalCadastroAberto" modal="true" [style]="{width: '50vw', minWidth: '300px', maxWidth: '1000px' ,height: '60vh', minHeight: 'fit-content'}">
+  <app-cadastro-livros [ehModal]="true" (reloadLivros)="this.reloadLivros.next(); modalCadastroAberto = false"></app-cadastro-livros>
+</p-dialog>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { ItemBiblioteca } from '../model/Livro';
+import { ItemBiblioteca, Livro } from '../model/Livro';
 
 @Injectable({
   providedIn: 'root'
@@ -12,5 +12,9 @@ export class ItemBibliotecaService {
 
   buscarLivros() {
     return this.http.get<ItemBiblioteca[]>(`${environment.API_URL}/item-biblioteca`)
+  }
+
+  cadastrarItemBiblioteca(ItemBiblioteca: Livro) {
+    return this.http.post<ItemBiblioteca>(`${environment.API_URL}/item-biblioteca/criar/livro/${ItemBiblioteca.autor.id}`, ItemBiblioteca)
   }
 }

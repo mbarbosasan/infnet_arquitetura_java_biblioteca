@@ -24,7 +24,7 @@ public class ItemBibliotecaController {
     public ResponseEntity<?> cadastrarLivro(@PathVariable("idAutor") Long idAutor, @Valid @RequestBody Livro livro) {
         try {
             this.itemBibliotecaService.cadastrarItemBiblioteca(livro, idAutor);
-            return ResponseEntity.ok("Livro cadastrado com sucesso.");
+            return ResponseEntity.ok().build();
         } catch (AutorNaoEncontradoException e) {
             System.out.println(e);
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -37,7 +37,7 @@ public class ItemBibliotecaController {
     public ResponseEntity<?> cadastrarRevista(@PathVariable("idEditora") Long idEditora, @Valid @RequestBody Revista revista) {
         try {
             this.itemBibliotecaService.cadastrarItemBiblioteca(revista, idEditora);
-            return ResponseEntity.ok("Revista cadastrada com sucesso.");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
