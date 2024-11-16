@@ -57,7 +57,7 @@ export class CadastroLivrosComponent {
     descricao: ['', Validators.required],
     generos: ['', Validators.required],
     imagem_capa: ['', [Validators.required, Validators.pattern(/^(http|https):\/\/[^ "]+$/)]],
-    quantidade: ['', Validators.required],
+    quantidade: ['', Validators.required, Validators.min(1)],
     dataPublicacao: ['', Validators.required],
     isbn: ['', Validators.required]
   })

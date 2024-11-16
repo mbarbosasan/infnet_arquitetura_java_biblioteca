@@ -1,16 +1,17 @@
+import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { ListagemComponent } from "./listagem-livros/listagem-livros.component";
-import { AsyncPipe } from '@angular/common';
-import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs';
-import { DialogModule } from 'primeng/dialog';
-import { CadastroLivrosComponent } from './cadastro-livros/cadastro-livros.component';
-import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { CadastroLivrosComponent } from './cadastro-livros/cadastro-livros.component';
+import { ListagemComponent } from "./listagem-livros/listagem-livros.component";
 
 @Component({
   selector: 'app-livros',
@@ -25,7 +26,8 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     DialogModule,
     CadastroLivrosComponent,
-    ToastModule
+    ToastModule,
+    MenuModule
   ],
   providers: [MessageService],
   templateUrl: './livros.component.html',
@@ -38,10 +40,26 @@ export class LivrosComponent {
     distinctUntilChanged()
   );
 
+  menuItems: MenuItem[] = [
+    {
+      items: [
+        {
+          label: 'Cadastrar Livro',
+          icon: 'pi pi-plus',
+          command: () => this.modalCadastroAberto = true
+        },
+        {
+          label: 'Cadastrar Revista',
+          icon: 'pi pi-plus',
+        }
+      ]
+    }
+  ]
+
   reloadLivros = new Subject<void>();
-  
+
   modalCadastroAberto = false;
   constructor() {
   }
-  
+
 }

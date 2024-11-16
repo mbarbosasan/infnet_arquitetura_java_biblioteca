@@ -41,7 +41,7 @@
   
   <label for="generos">Gêneros</label>
   @if (generosState$ | async; as generosState) {
-    <p-multiSelect formControlName="generos" [options]="generosState.generos" [loading]="generosState.loading" optionLabel="nome" defaultLabel="Selecione um ou mais gêneros" appendTo="body" styleClass="w-full"></p-multiSelect>
+    <p-multiSelect formControlName="generos" [options]="generosState.generos" [loading]="generosState.loading" optionLabel="nome" placeholder="Selecione um ou mais gêneros" appendTo="body" styleClass="w-full"></p-multiSelect>
     @if (form.get('generos')?.invalid && form.get('generos')?.touched) {
       <small class="p-error">O gênero é obrigatório</small>
     } 
@@ -60,8 +60,13 @@
 
   <label for="quantidade">Quantidade disponível</label>
   <p-inputNumber formControlName="quantidade" placeholder="10" mode="decimal" min="1" max="1000" styleClass="w-full"></p-inputNumber>
-  @if (form.get('quantidade')?.invalid && form.get('quantidade')?.touched) {  
-    <small class="p-error">A quantidade é obrigatória</small>
+  @if (form.get('quantidade')?.touched) {  
+    @if (form.get('quantidade')?.getError('required')) {
+      <small class="p-error">A quantidade é obrigatória</small>
+    }
+    @if (form.get('quantidade')?.getError('min')) {
+      <small class="p-error">A quantidade deve ser maior que 0</small>
+    }
   }
 
   <div class="flex gap-1 w-full flex-wrap">
