@@ -4,6 +4,7 @@ import infnet.arquitetura_java_biblioteca.domain.Editora;
 import infnet.arquitetura_java_biblioteca.service.EditoraService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +25,32 @@ public class EditoraController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizarEditora(@PathVariable Long id, @Valid @RequestBody Editora editora) {
+        try {
+            this.editoraService.atualizarEditora(id, editora);
+            return ResponseEntity.ok("Editora atualizada com sucesso.");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body("Já existe uma editora com esse nome, escolha outro e tente novamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
     @GetMapping
     public ResponseEntity<?> buscarEditoras() {
         try {
             return ResponseEntity.ok(this.editoraService.buscarEditoras());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> excluirEditora(Long id) {
+        try {
+            this.editoraService.excluirEditora(id);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }

@@ -26,6 +26,9 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Emprestimo> emprestimos;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean deletado;
+
     public Cliente() {
     }
 
@@ -85,4 +88,11 @@ public class Cliente {
         this.emprestimos = emprestimos;
     }
 
+    public Boolean getDeletado() {
+        return deletado;
+    }
+
+    public void setDeletado(Boolean deletado) {
+        this.deletado = deletado;
+    }
 }

@@ -14,12 +14,15 @@ public class Editora {
     private Long id;
 
     @NotNull
+    @Column(unique = true)
     private String nome;
 
     @OneToMany(mappedBy = "editora")
     @JsonIgnore
     private List<Revista> revistas;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean deletado;
 
     public Editora() {
     }
@@ -43,5 +46,21 @@ public class Editora {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public List<Revista> getRevistas() {
+        return revistas;
+    }
+
+    public void setRevistas(List<Revista> revistas) {
+        this.revistas = revistas;
+    }
+
+    public Boolean getDeletado() {
+        return deletado;
+    }
+
+    public void setDeletado(Boolean deletado) {
+        this.deletado = deletado;
     }
 }

@@ -34,6 +34,12 @@ public class AutorService {
         this.autorRepository.save(autor);
     }
 
+    public void atualizarAutor(Long id, Autor autor) {
+        Autor autorSaved = this.autorRepository.findById(id).orElseThrow(() -> new AutorNaoEncontradoException("Autor não encontrado"));
+        autorSaved.setNome(autor.getNome());
+        this.autorRepository.save(autorSaved);
+    }
+
     public Iterable<Autor> buscarAutores() {
         return this.autorRepository.findAll();
     }

@@ -52,4 +52,16 @@ public class AutorController {
     public ResponseEntity<HttpStatus> adicionarLivro(@PathVariable("id") Long id, @RequestBody Livro livro) {
         return ResponseEntity.unprocessableEntity().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizarAutor(@PathVariable("id") Long id, @RequestBody Autor autor) {
+        try {
+            this.autorService.atualizarAutor(id, autor);
+            return ResponseEntity.ok().build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body("Já existe um autor com esse nome, utilize outro nome e tente novamente.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
 }
