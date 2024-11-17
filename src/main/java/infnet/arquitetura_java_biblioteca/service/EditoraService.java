@@ -5,6 +5,8 @@ import infnet.arquitetura_java_biblioteca.repository.EditoraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class EditoraService {
     @Autowired
@@ -14,7 +16,11 @@ public class EditoraService {
         return this.editoraRepository.save(editora);
     }
 
-    public void buscarEditora(Long id) {
-        this.editoraRepository.findById(id);
+    public Optional<Editora> buscarEditora(Long id) {
+        return this.editoraRepository.findById(id);
+    }
+
+    public Iterable<Editora> buscarEditoras() {
+        return this.editoraRepository.findAll();
     }
 }

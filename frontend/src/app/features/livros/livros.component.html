@@ -7,9 +7,13 @@
   <p-inputIcon styleClass="pi pi-search"></p-inputIcon>
 </p-iconField>
 </div>
-<app-listagem-livros [filter]="filter$ | async"></app-listagem-livros>
+<app-listagem-livros [filter]="filter$ | async" [reloadLivros]="(reloadLivros$ | async) || ''"></app-listagem-livros>
 
 
-<p-dialog header="Cadastro de Livros" [(visible)]="modalCadastroAberto" modal="true" [style]="{width: '50vw', minWidth: '300px', maxWidth: '1000px' ,height: '60vh', minHeight: 'fit-content'}">
-  <app-cadastro-livros [ehModal]="true" (reloadLivros)="this.reloadLivros.next(); modalCadastroAberto = false"></app-cadastro-livros>
+<p-dialog header="Cadastro de Livros" [(visible)]="modalCadastroLivroAberto" modal="true" [style]="{width: '50vw', minWidth: '300px', maxWidth: '1000px' ,height: '60vh', minHeight: 'fit-content'}">
+  <app-cadastro-livros [ehModal]="true" (reloadLivros)="triggerReloadLivros('LIVRO')"></app-cadastro-livros>
+</p-dialog>
+
+<p-dialog header="Cadastro de Revista" [(visible)]="modalCadastroRevistaAberto" modal="true" [style]="{width: '50vw', minWidth: '300px', maxWidth: '1000px' ,height: '60vh', minHeight: 'fit-content'}">
+  <app-cadastro-revista [ehModal]="true" (reloadLivros)="triggerReloadLivros('REVISTA')"></app-cadastro-revista>
 </p-dialog>

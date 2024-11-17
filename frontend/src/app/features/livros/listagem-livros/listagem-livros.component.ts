@@ -1,5 +1,5 @@
-import { Component, effect, inject, input } from '@angular/core';
-import { delay, map, catchError, of, startWith, combineLatestWith } from 'rxjs';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { delay, map, catchError, of, startWith, combineLatestWith, merge, switchMap, tap, combineLatest, Observable } from 'rxjs';
 import { ItemBibliotecaService } from '../../../core/services/item-biblioteca.service';
 import { AsyncPipe } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -17,33 +17,23 @@ import { ItemBiblioteca } from '../../../core/model/Livro';
     SkeletonModule
   ],
   templateUrl: './listagem-livros.component.html',
-  styleUrl: './listagem-livros.component.css'
+  styleUrl: './listagem-livros.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListagemComponent {
   livroService = inject(ItemBibliotecaService)
   carrinhoService = inject(CarrinhoService)
   filter = input<string | null>('');
-  reloadLivros = input();
+  reloadLivros = input<string>();
   filter$ = toObservable(this.filter);
-  reloadLivros$ = toObservable(this.reloadLivros);
-  livros$ = this.livroService.buscarLivros().pipe(
-    combineLatestWith(this.filter$, this.reloadLivros$),
-    map(([livros, filter, reloadLivros]) => {
-      console.log(livros)
-      if (!filter) {
-        return { loading: false, error: false, livros }
-      }
-      console.log(filter)
-      return {
-        loading: false,
-        error: false,
-        livros: livros.filter(livro => livro.titulo.toLocaleLowerCase().includes(filter.toLocaleLowerCase()))
-      }
-    }),
-    catchError(() => of({ loading: false, error: true, livros: null, })),
-    startWith({ loading: false, error: false, livros: null }),
+  livros$ = combineLatest(
+    [toObservable(this.reloadLivros), this.filter$]
+  ).pipe(
+    switchMap(([_, filter]) => this.livroService.buscarLivros()),
+    map(livros => ({ loading: false, error: false, livros })),
+    catchError(() => of({ loading: false, error: true, livros: [] })),
+    startWith({ loading: true, error: false, livros: [] }),
   )
-
 
   adicionarAoCarrinho(livro: ItemBiblioteca) {
     this.carrinhoService.adicionarCarrinho(livro)

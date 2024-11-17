@@ -19,5 +19,6 @@ export interface Livro extends ItemBiblioteca {
 }
 
 export interface Revista extends ItemBiblioteca {
+  editora: Editora,
   issn: string,
 }
