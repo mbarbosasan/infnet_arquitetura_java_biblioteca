@@ -22,7 +22,7 @@ public class Editora {
     private List<Revista> revistas;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean deletado;
+    private Boolean deletado = false;
 
     public Editora() {
     }

@@ -1,6 +1,7 @@
 package infnet.arquitetura_java_biblioteca.controllers;
 
 import infnet.arquitetura_java_biblioteca.domain.Editora;
+import infnet.arquitetura_java_biblioteca.exceptions.EditoraNaoEncontradaException;
 import infnet.arquitetura_java_biblioteca.service.EditoraService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +47,13 @@ public class EditoraController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> excluirEditora(Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> excluirEditora(@PathVariable Long id) {
         try {
             this.editoraService.excluirEditora(id);
             return ResponseEntity.ok().build();
+        } catch (EditoraNaoEncontradaException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }

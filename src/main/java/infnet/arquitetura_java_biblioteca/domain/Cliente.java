@@ -27,7 +27,7 @@ public class Cliente {
     private List<Emprestimo> emprestimos;
 
     @Column(columnDefinition = "boolean default false")
-    private Boolean deletado;
+    private Boolean deletado = false;
 
     public Cliente() {
     }
