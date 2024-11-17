@@ -5,7 +5,10 @@ import infnet.arquitetura_java_biblioteca.domain.Emprestimo;
 import infnet.arquitetura_java_biblioteca.domain.ItemBiblioteca;
 import infnet.arquitetura_java_biblioteca.domain.dtos.CriarEmprestimoDTO;
 import infnet.arquitetura_java_biblioteca.domain.enums.EmprestimoStatus;
-import infnet.arquitetura_java_biblioteca.exceptions.*;
+import infnet.arquitetura_java_biblioteca.exceptions.ClienteNaoEncontradoException;
+import infnet.arquitetura_java_biblioteca.exceptions.EmprestimoNaoEncontradoException;
+import infnet.arquitetura_java_biblioteca.exceptions.ItensAusentesException;
+import infnet.arquitetura_java_biblioteca.exceptions.ItensNaoInformados;
 import infnet.arquitetura_java_biblioteca.repository.EmprestimoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +66,7 @@ public class EmprestimoService {
 
     public Emprestimo renovarEmprestimo(Long id, Date novaDataDevolucao) {
         Emprestimo emprestimo = this.emprestimoRepository.findById(id).orElseThrow(() -> new EmprestimoNaoEncontradoException("Emprestimo não encontrado."));
-        if (emprestimo.getDataDevolucao().before(new Date()))
-            throw new EmprestimoAtrasadoException("Não é possível renovar um emprestimo que já está atrasado.");
-        if (novaDataDevolucao.before(new Date()) || novaDataDevolucao.before(emprestimo.getDataDevolucao()))
-            throw new EmprestimoDataDevolucaoInvalidaException("A data de devolução informada é inválida, verifique se ela não é anterior a data atual ou a data de devolução atual.");
-        if (emprestimo.getDataDevolucaoEfetivada() != null)
-            throw new EmprestimoFinalizadoException("Não é possível renovar um emprestimo que já foi finalizado.");
+        emprestimo.validaRenovacaoEmprestimo(novaDataDevolucao);
         emprestimo.setDataDevolucao(novaDataDevolucao);
         emprestimo.setStatus(EmprestimoStatus.RENOVADO);
         return this.emprestimoRepository.save(emprestimo);

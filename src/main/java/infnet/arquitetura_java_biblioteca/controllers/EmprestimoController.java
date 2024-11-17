@@ -50,7 +50,7 @@ public class EmprestimoController {
     public ResponseEntity<?> renovarEmprestimo(@PathVariable("id") Long id, @Valid @RequestBody RenovarEmprestimoDTO renovarEmprestimoDTO) {
         try {
             this.emprestimoService.renovarEmprestimo(id, renovarEmprestimoDTO.novaDataDevolucao());
-            return ResponseEntity.ok("Emprestimo renovado com sucesso!");
+            return ResponseEntity.ok().body("Emprestimo renovado com sucesso!");
         } catch (EmprestimoNaoEncontradoException | EmprestimoFinalizadoException |
                  EmprestimoDataDevolucaoInvalidaException | EmprestimoAtrasadoException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

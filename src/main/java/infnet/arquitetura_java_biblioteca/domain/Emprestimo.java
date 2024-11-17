@@ -2,6 +2,9 @@ package infnet.arquitetura_java_biblioteca.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import infnet.arquitetura_java_biblioteca.domain.enums.EmprestimoStatus;
+import infnet.arquitetura_java_biblioteca.exceptions.EmprestimoAtrasadoException;
+import infnet.arquitetura_java_biblioteca.exceptions.EmprestimoDataDevolucaoInvalidaException;
+import infnet.arquitetura_java_biblioteca.exceptions.EmprestimoFinalizadoException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -52,6 +55,15 @@ public class Emprestimo {
         this.dataDevolucaoEfetivada = dataDevolucaoEfetivada;
         this.cliente = cliente;
         this.itensBiblioteca = itensBiblioteca;
+    }
+
+    public void validaRenovacaoEmprestimo(Date novaDataDevolucao) {
+        if (this.getDataDevolucao().before(new Date()))
+            throw new EmprestimoAtrasadoException("Não é possível renovar um emprestimo que já está atrasado.");
+        if (novaDataDevolucao.before(new Date()) || novaDataDevolucao.before(this.getDataDevolucao()))
+            throw new EmprestimoDataDevolucaoInvalidaException("A data de devolução informada é inválida, verifique se ela não é anterior a data atual ou a data de devolução atual.");
+        if (this.getDataDevolucaoEfetivada() != null)
+            throw new EmprestimoFinalizadoException("Não é possível renovar um emprestimo que já foi finalizado.");
     }
 
     public Long getId() {
