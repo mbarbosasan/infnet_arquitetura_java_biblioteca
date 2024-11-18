@@ -29,10 +29,10 @@ public class ClienteController {
         return ResponseEntity.ok(this.clienteService.buscarCliente(id));
     }
 
-    @PatchMapping
-    public ResponseEntity<?> atualizarCliente(@Valid @RequestBody Cliente cliente) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> atualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
         try {
-            this.clienteService.atualizarCliente(cliente);
+            this.clienteService.atualizarCliente(id, cliente);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
