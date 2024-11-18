@@ -3,6 +3,7 @@ package infnet.arquitetura_java_biblioteca.controllers;
 import infnet.arquitetura_java_biblioteca.domain.Autor;
 import infnet.arquitetura_java_biblioteca.domain.Livro;
 import infnet.arquitetura_java_biblioteca.service.AutorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Autor", description = "Busca, atualização e cadastro de autores no sistema.")
 @RestController
 @RequestMapping("/autor")
 public class AutorController {

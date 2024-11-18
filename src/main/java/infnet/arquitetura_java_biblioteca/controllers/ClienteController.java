@@ -2,11 +2,13 @@ package infnet.arquitetura_java_biblioteca.controllers;
 
 import infnet.arquitetura_java_biblioteca.domain.Cliente;
 import infnet.arquitetura_java_biblioteca.service.ClienteService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Cliente", description = "Busca, atualização e criação de clientes no sistema.")
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {

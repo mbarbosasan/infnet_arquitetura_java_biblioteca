@@ -2,11 +2,13 @@ package infnet.arquitetura_java_biblioteca.controllers;
 
 import infnet.arquitetura_java_biblioteca.domain.Genero;
 import infnet.arquitetura_java_biblioteca.service.GeneroService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Gênero", description = "Busca, atualização e cadastro de gêneros de livros/revistas no sistema.")
 @RestController
 @RequestMapping("/genero")
 public class GeneroController {

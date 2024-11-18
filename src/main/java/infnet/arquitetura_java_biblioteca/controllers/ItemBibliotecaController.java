@@ -6,6 +6,7 @@ import infnet.arquitetura_java_biblioteca.domain.Revista;
 import infnet.arquitetura_java_biblioteca.exceptions.AutorNaoEncontradoException;
 import infnet.arquitetura_java_biblioteca.exceptions.ItemNaoEncontradoException;
 import infnet.arquitetura_java_biblioteca.service.ItemBibliotecaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 
+@Tag(name = "Itens da Biblioteca", description = "Busca, atualização e cadastro de itens da biblioteca podendo ser livro ou revistas.")
 @RestController
 @RequestMapping("/item-biblioteca")
 public class ItemBibliotecaController {

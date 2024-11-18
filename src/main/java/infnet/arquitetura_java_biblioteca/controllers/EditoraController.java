@@ -3,12 +3,14 @@ package infnet.arquitetura_java_biblioteca.controllers;
 import infnet.arquitetura_java_biblioteca.domain.Editora;
 import infnet.arquitetura_java_biblioteca.exceptions.EditoraNaoEncontradaException;
 import infnet.arquitetura_java_biblioteca.service.EditoraService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Editora", description = "Busca, cadastro e atualização de editoras no sistema.")
 @RestController
 @RequestMapping("/editora")
 public class EditoraController {

@@ -6,6 +6,7 @@ import infnet.arquitetura_java_biblioteca.domain.dtos.ErrorResponse;
 import infnet.arquitetura_java_biblioteca.domain.dtos.RenovarEmprestimoDTO;
 import infnet.arquitetura_java_biblioteca.exceptions.*;
 import infnet.arquitetura_java_biblioteca.service.EmprestimoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Empréstimo", description = "Criação, renovação e busca de empréstimos no sistema.")
 @RestController
 @RequestMapping("/emprestimo")
 public class EmprestimoController {
