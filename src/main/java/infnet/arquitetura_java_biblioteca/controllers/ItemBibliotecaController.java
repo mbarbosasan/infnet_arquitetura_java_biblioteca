@@ -33,6 +33,34 @@ public class ItemBibliotecaController {
         }
     }
 
+    @PutMapping("/editar/livro/{id}")
+    public ResponseEntity<?> editarLivro(@PathVariable("id") Long id, @RequestBody Livro livro) {
+        try {
+            this.itemBibliotecaService.atualizarLivro(id, livro);
+            return ResponseEntity.ok().build();
+        } catch (ItemNaoEncontradoException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (ClassCastException e) {
+            return ResponseEntity.badRequest().body("Houve um erro ao tentar atualizar esse item, verifique se o tipo do item está correto e tente novamente.");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/editar/revista/{id}")
+    public ResponseEntity<?> editarRevista(@PathVariable("id") Long id, @RequestBody Revista revista) {
+        try {
+            this.itemBibliotecaService.atualizarRevista(id, revista);
+            return ResponseEntity.ok().build();
+        } catch (ItemNaoEncontradoException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (ClassCastException e) {
+            return ResponseEntity.badRequest().body("Houve um erro ao tentar atualizar esse item, verifique se o tipo do item está correto e tente novamente.");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/criar/revista/{idEditora}")
     public ResponseEntity<?> cadastrarRevista(@PathVariable("idEditora") Long idEditora, @Valid @RequestBody Revista revista) {
         try {
